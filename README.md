@@ -2,6 +2,8 @@
 
 แอปจัดการงานรายวันแบบ Production-ready ด้วย **Next.js App Router**, **TypeScript**, **Tailwind CSS**, **Firebase** (Auth + Firestore) พร้อมฟีเจอร์ Engagement, Growth และ Quality-of-Life ครบชุด
 
+**Repository:** https://github.com/ThanasornSir0204/daily-task-log
+
 ---
 
 ## Tech Stack
@@ -27,13 +29,15 @@
 | **Auth + Firestore** | [Firebase Console](https://console.firebase.google.com/) | เปิด Email/Password, สร้าง Firestore |
 | **Security Rules** | Firebase CLI | `npm run firebase:deploy` |
 
-**ขั้นตอน Deploy (Vercel)**
+**ขั้นตอน Deploy (Vercel) — โค้ดอยู่บน GitHub แล้ว**
 
-1. Push โค้ดขึ้น GitHub  
-2. Vercel → New Project → เลือก repo `daily-task-log`  
-3. ตั้งค่า Environment Variables (ทุกตัวที่ขึ้นต้น `NEXT_PUBLIC_FIREBASE_`)  
-4. Deploy — ได้ URL เช่น `https://daily-task-log.vercel.app`  
-5. Firebase Console → Authentication → Authorized domains → เพิ่มโดเมน Vercel  
+1. เปิด [vercel.com/new](https://vercel.com/new) → Import `ThanasornSir0204/daily-task-log`  
+2. Framework Preset: **Next.js** (ตรวจจับอัตโนมัติ)  
+3. **Environment Variables** — คัดลอกจาก `.env.local` ในเครื่อง (ทุกตัว `NEXT_PUBLIC_FIREBASE_*`)  
+4. กด **Deploy** → ได้ URL เช่น `https://daily-task-log.vercel.app`  
+5. [Firebase Console → Authentication → Settings → Authorized domains](https://console.firebase.google.com/project/dailytasknet-40e9d/authentication/settings)  
+   - เพิ่มโดเมน Vercel (เช่น `daily-task-log.vercel.app` และ `*.vercel.app` ถ้าต้องการ preview)  
+6. ทดสอบ: เปิด URL → สมัครสมาชิก → เพิ่มงาน  
 
 **ทางเลือกอื่น:** Netlify, Cloudflare Pages, Firebase Hosting (static export ไม่เหมาะกับ App Router แบบเต็ม — ใช้ Vercel ง่ายกว่า)
 
