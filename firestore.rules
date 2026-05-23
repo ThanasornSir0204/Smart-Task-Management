@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function ownsTask(taskId) {
+      return isOwner(get(/databases/$(database)/documents/tasks/$(taskId)).data.userId);
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth != null
+        && (request.auth.uid == userId || resource.data.leaderboardOptIn == true);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+    }
+
+    match /tasks/{taskId} {
+      allow read, update, delete: if isOwner(resource.data.userId);
+      allow create: if isOwner(request.resource.data.userId)
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.status in ['TODO', 'DOING', 'DONE']
+        && request.resource.data.deadline is string
+        && request.resource.data.deadlineTime is string;
+
+      match /history/{historyId} {
+        allow read, create: if ownsTask(taskId);
+      }
+    }
+
+    match /taskTemplates/{templateId} {
+      allow read, update, delete: if isOwner(resource.data.userId);
+      allow create: if isOwner(request.resource.data.userId)
+        && request.resource.data.name is string
+        && request.resource.data.title is string;
+    }
+  }
+}
