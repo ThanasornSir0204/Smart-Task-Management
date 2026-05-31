@@ -320,12 +320,9 @@ export function Dashboard() {
       title: t.dashboard.history,
       html,
       confirmButtonText: "ตกลง",
-      background: document.documentElement.classList.contains("dark")
-        ? "#0f172a"
-        : "#fff",
-      color: document.documentElement.classList.contains("dark")
-        ? "#f1f5f9"
-        : "#0f172a",
+      background: "#1A1A1A",
+      color: "#FFFFFF",
+      confirmButtonColor: "#5E6AD2",
     });
   }
 
@@ -343,20 +340,22 @@ export function Dashboard() {
   return (
     <AppShell user={user}>
       {tasksError && (
-        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
+        <div className="mb-4 linear-card-sm linear-badge-danger border-[var(--linear-danger)] text-[var(--linear-danger)]">
           {tasksError}
         </div>
       )}
 
-      <div className="mb-6 grid gap-4 lg:grid-cols-3">
-        <div className="rounded-xl border border-orange-200 bg-orange-50 p-4 dark:border-orange-900 dark:bg-orange-950/30 lg:col-span-1">
-          <p className="flex items-center gap-2 text-sm font-medium text-orange-800 dark:text-orange-200">
+      <div className="mb-8 grid gap-4 lg:grid-cols-3">
+        <div className="linear-card-sm lg:col-span-1">
+          <p className="linear-label flex items-center gap-2">
             <FontAwesomeIcon icon={faFire} />
             {t.dashboard.streak}
           </p>
-          <p className="mt-1 text-3xl font-bold tabular-nums">
+          <p className="linear-stat-value mt-2 tabular-nums">
             {profile?.streakCount ?? 0}{" "}
-            <span className="text-base font-normal">{t.dashboard.streakDays}</span>
+            <span className="text-base font-normal linear-text-secondary">
+              {t.dashboard.streakDays}
+            </span>
           </p>
         </div>
         <div className="lg:col-span-2">
@@ -365,7 +364,7 @@ export function Dashboard() {
       </div>
 
       <section className="mb-8">
-        <h2 className="mb-4 text-lg font-semibold">{t.dashboard.summary}</h2>
+        <h2 className="linear-heading mb-4">{t.dashboard.summary}</h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {(
             [
@@ -375,23 +374,20 @@ export function Dashboard() {
               ["ALL", counts.total],
             ] as const
           ).map(([label, value]) => (
-            <div
-              key={label}
-              className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
-            >
-              <p className="text-xs uppercase text-slate-500">{label}</p>
-              <p className="text-3xl font-bold">{value}</p>
+            <div key={label} className="linear-stat">
+              <p className="linear-label uppercase">{label}</p>
+              <p className="linear-stat-value mt-1">{value}</p>
             </div>
           ))}
         </div>
-        <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-          <div className="mb-2 flex justify-between text-sm">
+        <div className="linear-card-sm mt-4">
+          <div className="mb-2 flex justify-between linear-label">
             <span>{t.dashboard.progress}</span>
             <span>{counts.percent}%</span>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+          <div className="linear-progress">
             <div
-              className="h-full rounded-full bg-emerald-500 transition-all"
+              className="linear-progress-fill"
               style={{ width: `${counts.percent}%` }}
             />
           </div>
@@ -399,10 +395,11 @@ export function Dashboard() {
       </section>
 
       <div className="mb-8 grid gap-6 lg:grid-cols-3">
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-2">
-          <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-            <FontAwesomeIcon icon={faPlus} className="text-[var(--accent)]" />
+        <section className="linear-card lg:col-span-2">
+          <h2 className="linear-subheading mb-4 flex items-center gap-2">
+            <FontAwesomeIcon icon={faPlus} className="text-[var(--linear-accent)]" />
             {t.dashboard.addTask}
+            <span className="linear-kbd">⌘N</span>
           </h2>
           <form onSubmit={handleAddTask} className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
@@ -410,14 +407,14 @@ export function Dashboard() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="ชื่องาน"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                className="linear-input"
                 required
               />
             </div>
             <select
               value={newStatus}
               onChange={(e) => setNewStatus(e.target.value as TaskStatus)}
-              className="rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-select"
             >
               {TASK_STATUSES.map((s) => (
                 <option key={s}>{s}</option>
@@ -428,7 +425,7 @@ export function Dashboard() {
               onChange={(e) =>
                 setPriority(e.target.value as "HIGH" | "MEDIUM" | "LOW")
               }
-              className="rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-select"
             >
               {TASK_PRIORITIES.map((p) => (
                 <option key={p}>{p}</option>
@@ -438,26 +435,26 @@ export function Dashboard() {
               type="date"
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-input"
             />
             <input
               type="time"
               value={deadlineTime}
               onChange={(e) => setDeadlineTime(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-input"
             />
             <input
               value={tagsText}
               onChange={(e) => setTagsText(e.target.value)}
               placeholder={t.dashboard.tags}
-              className="sm:col-span-2 rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-input sm:col-span-2"
             />
             <textarea
               value={subtasksText}
               onChange={(e) => setSubtasksText(e.target.value)}
               placeholder="งานย่อย (หนึ่งบรรทัดต่อหนึ่งรายการ)"
               rows={2}
-              className="sm:col-span-2 rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-textarea sm:col-span-2"
             />
             <div className="flex flex-wrap gap-1 sm:col-span-2">
               {STATUS_STICKERS.map((s) => (
@@ -465,7 +462,11 @@ export function Dashboard() {
                   key={s || "none"}
                   type="button"
                   onClick={() => setSticker(s || null)}
-                  className={`rounded border px-2 py-0.5 text-lg ${sticker === (s || null) ? "border-[var(--accent)]" : "border-slate-300"}`}
+                  className={`linear-btn linear-btn-ghost linear-btn-icon text-base ${
+                    sticker === (s || null)
+                      ? "border border-[var(--linear-accent)]"
+                      : ""
+                  }`}
                 >
                   {s || "—"}
                 </button>
@@ -475,7 +476,7 @@ export function Dashboard() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 font-semibold text-white"
+                className="linear-btn linear-btn-primary"
               >
                 <FontAwesomeIcon icon={faPlus} />
                 {t.dashboard.addTask}
@@ -484,12 +485,12 @@ export function Dashboard() {
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
                 placeholder="ชื่อเทมเพลต"
-                className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+                className="linear-input min-w-0 flex-1"
               />
               <button
                 type="button"
                 onClick={saveTemplate}
-                className="rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-600"
+                className="linear-btn linear-btn-secondary"
               >
                 บันทึกเทมเพลต
               </button>
@@ -502,8 +503,8 @@ export function Dashboard() {
         </div>
       </div>
 
-      <section className="mb-8 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="mb-4 flex items-center gap-2 font-semibold">
+      <section className="linear-card mb-8">
+        <h2 className="linear-subheading mb-4 flex items-center gap-2">
           <FontAwesomeIcon icon={faFilter} />
           {t.dashboard.filters}
         </h2>
@@ -513,39 +514,40 @@ export function Dashboard() {
               key={f}
               type="button"
               onClick={() => setStatusFilter(f)}
-              className={`rounded-full px-3 py-1 text-sm ${statusFilter === f ? "bg-[var(--accent)] text-white" : "bg-slate-100 dark:bg-slate-800"}`}
+              className={`linear-pill ${statusFilter === f ? "linear-pill-active" : ""}`}
             >
               {f === "ALL" ? t.common.all : f}
             </button>
           ))}
         </div>
-        <label className="mb-4 flex items-center gap-2 text-sm">
+        <label className="mb-4 flex items-center gap-2 linear-label">
           <input
             type="checkbox"
             checked={overdueOnly}
             onChange={(e) => setOverdueOnly(e.target.checked)}
+            className="linear-checkbox"
           />
-          <FontAwesomeIcon icon={faTriangleExclamation} className="text-red-500" />
+          <FontAwesomeIcon icon={faTriangleExclamation} className="text-[var(--linear-danger)]" />
           {t.dashboard.overdueOnly}
         </label>
         <div className="mb-4 grid gap-3 sm:grid-cols-3">
           <div className="relative sm:col-span-2">
             <FontAwesomeIcon
               icon={faSearch}
-              className="absolute left-3 top-2.5 text-slate-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 linear-text-tertiary"
             />
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t.common.search}
-              className="w-full rounded-lg border border-slate-300 py-2 pl-9 pr-3 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-input pl-9"
             />
           </div>
           <div className="flex gap-2">
             <select
               value={sortField}
               onChange={(e) => setSortField(e.target.value as SortField)}
-              className="flex-1 rounded-lg border border-slate-300 px-2 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+              className="linear-select flex-1"
             >
               <option value="createdAt">created</option>
               <option value="deadline">deadline</option>
@@ -555,7 +557,7 @@ export function Dashboard() {
             <select
               value={sortDir}
               onChange={(e) => setSortDir(e.target.value as SortDirection)}
-              className="rounded-lg border border-slate-300 px-2 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+              className="linear-select w-16"
             >
               <option value="desc">↓</option>
               <option value="asc">↑</option>
@@ -565,7 +567,7 @@ export function Dashboard() {
         <button
           type="button"
           onClick={handleExportCsv}
-          className="inline-flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm text-white"
+          className="linear-btn linear-btn-secondary"
         >
           <FontAwesomeIcon icon={faFileExport} />
           Export ({exportTasks.length})
@@ -573,23 +575,33 @@ export function Dashboard() {
       </section>
 
       <section>
-        <h2 className="mb-4 text-lg font-semibold">{t.dashboard.taskList}</h2>
+        <h2 className="linear-heading mb-4">{t.dashboard.taskList}</h2>
         {tasksLoading ? (
-          <p>{t.common.loading}</p>
+          <p className="linear-text-secondary">{t.common.loading}</p>
         ) : visibleTasks.length === 0 ? (
-          <p className="text-slate-500">ไม่มีงาน</p>
+          <div className="linear-empty">
+            <p className="mb-4">ไม่มีงาน</p>
+            <button
+              type="button"
+              onClick={() => document.querySelector<HTMLInputElement>('[placeholder="ชื่องาน"]')?.focus()}
+              className="linear-btn linear-btn-primary"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+              เพิ่มงานแรก
+            </button>
+          </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-            <table className="min-w-full text-sm">
-              <thead className="border-b bg-slate-50 text-xs uppercase dark:bg-slate-800/50">
+          <div className="linear-table-wrap overflow-x-auto">
+            <table className="linear-table">
+              <thead>
                 <tr>
-                  <th className="px-4 py-3">งาน</th>
-                  <th className="px-4 py-3">สถานะ</th>
-                  <th className="px-4 py-3">Deadline</th>
-                  <th className="px-4 py-3 text-right">จัดการ</th>
+                  <th>งาน</th>
+                  <th>สถานะ</th>
+                  <th>Deadline</th>
+                  <th className="text-right">จัดการ</th>
                 </tr>
               </thead>
-              <tbody className="divide-y dark:divide-slate-800">
+              <tbody>
                 {visibleTasks.map((task) => {
                   const overdue = isOverdue(
                     task.deadline,
@@ -599,29 +611,35 @@ export function Dashboard() {
                   return (
                     <tr
                       key={task.id}
-                      className={overdue ? "bg-red-50 dark:bg-red-950/20" : ""}
+                      className={overdue ? "linear-table-row-overdue" : ""}
                     >
-                      <td className="px-4 py-3">
+                      <td>
                         <div className="flex items-start gap-2">
                           {task.sticker && (
-                            <span className="text-lg">{task.sticker}</span>
+                            <span className="text-base">{task.sticker}</span>
                           )}
                           <div>
-                            <p className={overdue ? "font-semibold text-red-700" : "font-medium"}>
+                            <p
+                              className={
+                                overdue
+                                  ? "font-medium text-[var(--linear-danger)]"
+                                  : "font-medium"
+                              }
+                            >
                               {task.title}
                             </p>
-                            <p className="text-xs text-slate-500">
-                              <span className={`mr-1 rounded px-1 ${priorityBadgeClasses(task.priority)}`}>
+                            <p className="linear-label mt-1">
+                              <span className={`mr-1 ${priorityBadgeClasses(task.priority)}`}>
                                 {task.priority}
                               </span>
                               {task.tags.map((tag) => (
-                                <span key={tag} className="mr-1">
+                                <span key={tag} className="mr-1 linear-text-tertiary">
                                   #{tag}
                                 </span>
                               ))}
                             </p>
                             {task.subtasks.length > 0 && (
-                              <p className="text-xs text-slate-400">
+                              <p className="linear-text-tertiary mt-0.5 text-[12px]">
                                 งานย่อย {task.subtasks.filter((s) => s.done).length}/
                                 {task.subtasks.length}
                                 {task.pomodoroMinutes > 0 &&
@@ -631,29 +649,27 @@ export function Dashboard() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${statusBadgeClasses(task.status)}`}
-                        >
+                      <td>
+                        <span className={statusBadgeClasses(task.status)}>
                           {task.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td>
                         <span className="inline-flex items-center gap-1">
-                          <FontAwesomeIcon icon={faCalendar} className="text-slate-400" />
+                          <FontAwesomeIcon icon={faCalendar} className="linear-text-tertiary" />
                           {formatDeadlineDisplay(task.deadline, task.deadlineTime)}
                         </span>
                         <br />
-                        <span className="text-xs text-slate-400">
+                        <span className="linear-text-tertiary text-[12px]">
                           + {formatDisplayDate(task.createdAt)}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td>
                         <div className="flex justify-end gap-1">
                           <button
                             type="button"
                             onClick={() => showHistory(task)}
-                            className="rounded border px-2 py-1 text-xs"
+                            className="linear-btn linear-btn-ghost linear-btn-icon"
                             title={t.dashboard.history}
                           >
                             <FontAwesomeIcon icon={faHistory} />
@@ -661,14 +677,14 @@ export function Dashboard() {
                           <button
                             type="button"
                             onClick={() => setEditTask(task)}
-                            className="rounded border border-sky-300 px-2 py-1 text-xs text-sky-700"
+                            className="linear-btn linear-btn-secondary linear-btn-icon"
                           >
                             <FontAwesomeIcon icon={faPenToSquare} />
                           </button>
                           <button
                             type="button"
                             onClick={() => softDelete(task)}
-                            className="rounded border border-red-300 px-2 py-1 text-xs text-red-700"
+                            className="linear-btn linear-btn-danger linear-btn-icon"
                           >
                             <FontAwesomeIcon icon={faTrash} />
                           </button>

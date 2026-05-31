@@ -83,34 +83,35 @@ export function TaskEditModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div
-        role="dialog"
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900"
-      >
+    <div className="linear-modal-overlay">
+      <div role="dialog" className="linear-modal">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold">{t.common.edit}</h2>
-          <button type="button" onClick={onClose} className="p-1">
+          <h2 className="linear-subheading">{t.common.edit}</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="linear-btn linear-btn-ghost linear-btn-icon linear-text-secondary"
+          >
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium">ชื่องาน</label>
+            <label className="linear-label mb-1 block">ชื่องาน</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-input"
               required
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-sm font-medium">สถานะ</label>
+              <label className="linear-label mb-1 block">สถานะ</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as TaskStatus)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                className="linear-select"
               >
                 {TASK_STATUSES.map((s) => (
                   <option key={s} value={s}>
@@ -120,13 +121,11 @@ export function TaskEditModal({
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">
-                {t.dashboard.priority}
-              </label>
+              <label className="linear-label mb-1 block">{t.dashboard.priority}</label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value as TaskPriority)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                className="linear-select"
               >
                 {TASK_PRIORITIES.map((p) => (
                   <option key={p} value={p}>
@@ -138,50 +137,46 @@ export function TaskEditModal({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-sm font-medium">วันที่</label>
+              <label className="linear-label mb-1 block">วันที่</label>
               <input
                 type="date"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                className="linear-input"
                 required
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium">เวลา</label>
+              <label className="linear-label mb-1 block">เวลา</label>
               <input
                 type="time"
                 value={deadlineTime}
                 onChange={(e) => setDeadlineTime(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+                className="linear-input"
                 required
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">
-              {t.dashboard.tags}
-            </label>
+            <label className="linear-label mb-1 block">{t.dashboard.tags}</label>
             <input
               value={tagsText}
               onChange={(e) => setTagsText(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+              className="linear-input"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">
-              {t.dashboard.sticker}
-            </label>
-            <div className="flex flex-wrap gap-2">
+            <label className="linear-label mb-1 block">{t.dashboard.sticker}</label>
+            <div className="flex flex-wrap gap-1">
               {STATUS_STICKERS.map((s) => (
                 <button
                   key={s || "none"}
                   type="button"
                   onClick={() => setSticker(s || null)}
-                  className={`rounded-lg border px-2 py-1 text-lg ${
+                  className={`linear-btn linear-btn-ghost linear-btn-icon text-base ${
                     sticker === (s || null)
-                      ? "border-[var(--accent)] ring-2 ring-[var(--accent)]"
-                      : "border-slate-300 dark:border-slate-600"
+                      ? "border border-[var(--linear-accent)]"
+                      : ""
                   }`}
                 >
                   {s || "—"}
@@ -190,9 +185,7 @@ export function TaskEditModal({
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium">
-              {t.dashboard.subtasks}
-            </label>
+            <label className="linear-label mb-1 block">{t.dashboard.subtasks}</label>
             <ul className="space-y-2">
               {subtasks.map((sub, idx) => (
                 <li key={sub.id} className="flex gap-2">
@@ -204,6 +197,7 @@ export function TaskEditModal({
                       next[idx] = { ...sub, done: e.target.checked };
                       setSubtasks(next);
                     }}
+                    className="linear-checkbox mt-2"
                   />
                   <input
                     value={sub.title}
@@ -212,13 +206,14 @@ export function TaskEditModal({
                       next[idx] = { ...sub, title: e.target.value };
                       setSubtasks(next);
                     }}
-                    className="flex-1 rounded border border-slate-300 px-2 py-1 text-sm dark:border-slate-600 dark:bg-slate-800"
+                    className="linear-input flex-1"
                   />
                   <button
                     type="button"
                     onClick={() =>
                       setSubtasks(subtasks.filter((_, i) => i !== idx))
                     }
+                    className="linear-btn linear-btn-ghost linear-btn-icon linear-text-secondary"
                   >
                     <FontAwesomeIcon icon={faTimes} />
                   </button>
@@ -233,7 +228,7 @@ export function TaskEditModal({
                   { id: newSubtaskId(), title: "", done: false },
                 ])
               }
-              className="mt-2 inline-flex items-center gap-1 text-sm text-sky-600"
+              className="linear-btn linear-btn-ghost mt-2 text-[var(--linear-accent)]"
             >
               <FontAwesomeIcon icon={faPlus} /> เพิ่มงานย่อย
             </button>
@@ -242,14 +237,14 @@ export function TaskEditModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border px-4 py-2 dark:border-slate-600"
+              className="linear-btn linear-btn-secondary"
             >
               {t.common.cancel}
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="rounded-lg bg-[var(--accent)] px-4 py-2 font-semibold text-white"
+              className="linear-btn linear-btn-primary"
             >
               {saving ? "..." : t.common.save}
             </button>

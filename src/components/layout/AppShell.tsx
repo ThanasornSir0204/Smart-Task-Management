@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faListCheck,
   faRightFromBracket,
-  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import { signOut, type User } from "firebase/auth";
 import { useRouter } from "next/navigation";
@@ -31,41 +30,44 @@ export function AppShell({
   }
 
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <FontAwesomeIcon
-              icon={faListCheck}
-              className="text-xl text-[var(--accent)]"
-            />
-            <div>
-              <h1 className="text-lg font-bold sm:text-xl">{t.appName}</h1>
-              <p className="text-xs text-slate-500">{user.email}</p>
-            </div>
-          </div>
+    <div className="flex min-h-screen">
+      <aside className="linear-sidebar fixed inset-y-0 left-0 z-30 flex flex-col">
+        <div className="flex items-center gap-2 px-4 py-5">
+          <FontAwesomeIcon
+            icon={faListCheck}
+            className="text-[var(--linear-accent)]"
+          />
+          <span className="linear-subheading text-[15px]">{t.appName}</span>
+        </div>
+
+        <AppNav />
+
+        <div className="mt-auto border-t border-[var(--linear-border)] p-3">
+          <p className="linear-label truncate px-2 pb-2">{user.email}</p>
           <button
             type="button"
             onClick={handleLogout}
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-600"
+            className="linear-sidebar-link w-full"
           >
-            <FontAwesomeIcon icon={faRightFromBracket} />
-            <span className="hidden sm:inline">{t.common.logout}</span>
+            <FontAwesomeIcon icon={faRightFromBracket} className="w-4" />
+            {t.common.logout}
           </button>
         </div>
-        <AppNav />
-      </header>
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</main>
+      </aside>
+
+      <div className="flex min-h-screen flex-1 pl-[var(--linear-sidebar)]">
+        <main className="mx-auto w-full max-w-[var(--linear-content)] px-8 py-8">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
 
-export function LoadingScreen() {
-  const { t } = useLocale();
+export function LoadingScreen({ message = "Loading..." }: { message?: string }) {
   return (
-    <div className="flex min-h-screen items-center justify-center gap-2">
-      <FontAwesomeIcon icon={faSpinner} spin />
-      {t.common.loading}
+    <div className="flex min-h-screen items-center justify-center linear-text-secondary">
+      {message}
     </div>
   );
 }

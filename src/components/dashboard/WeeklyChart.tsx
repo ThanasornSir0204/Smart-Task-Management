@@ -18,15 +18,34 @@ export function WeeklyChart({ tasks }: { tasks: Task[] }) {
   const data = weeklyDoneSeries(tasks);
 
   return (
-    <div className="h-56 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h3 className="mb-2 text-sm font-semibold">{t.dashboard.weeklyChart}</h3>
-      <ResponsiveContainer width="100%" height="85%">
+    <div className="linear-card-sm h-56">
+      <h3 className="linear-label mb-3">{t.dashboard.weeklyChart}</h3>
+      <ResponsiveContainer width="100%" height="82%">
         <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-          <XAxis dataKey="day" tick={{ fontSize: 11 }} />
-          <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-          <Tooltip />
-          <Bar dataKey="done" fill="var(--accent)" radius={[6, 6, 0, 0]} />
+          <CartesianGrid stroke="#2A2A2A" strokeDasharray="3 3" vertical={false} />
+          <XAxis
+            dataKey="day"
+            tick={{ fontSize: 11, fill: "#8A8A9A" }}
+            axisLine={{ stroke: "#2A2A2A" }}
+            tickLine={false}
+          />
+          <YAxis
+            allowDecimals={false}
+            tick={{ fontSize: 11, fill: "#8A8A9A" }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <Tooltip
+            contentStyle={{
+              background: "#1A1A1A",
+              border: "1px solid #2A2A2A",
+              borderRadius: 6,
+              fontSize: 13,
+              color: "#FFFFFF",
+            }}
+            cursor={{ fill: "rgba(94, 106, 210, 0.08)" }}
+          />
+          <Bar dataKey="done" fill="#5E6AD2" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

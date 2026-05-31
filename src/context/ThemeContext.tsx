@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "dark";
 
 interface ThemeContextValue {
   theme: Theme;
@@ -20,41 +20,25 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const STORAGE_KEY = "theme";
-
-function applyThemeToDocument(theme: Theme): void {
-  document.documentElement.classList.toggle("dark", theme === "dark");
+function applyThemeToDocument(): void {
+  document.documentElement.classList.add("dark");
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const initial: Theme =
-      stored === "light" || stored === "dark"
-        ? stored
-        : window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-    setTheme(initial);
-    applyThemeToDocument(initial);
+    applyThemeToDocument();
     setMounted(true);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next: Theme = prev === "light" ? "dark" : "light";
-      localStorage.setItem(STORAGE_KEY, next);
-      applyThemeToDocument(next);
-      return next;
-    });
+    /* Linear design is dark-only */
   }, []);
 
   const value = useMemo(
-    () => ({ theme, toggleTheme, mounted }),
-    [theme, toggleTheme, mounted],
+    () => ({ theme: "dark" as const, toggleTheme, mounted }),
+    [toggleTheme, mounted],
   );
 
   return (

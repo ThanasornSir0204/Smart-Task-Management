@@ -118,22 +118,22 @@ export function statusLabel(status: TaskStatus): string {
 export function statusBadgeClasses(status: TaskStatus): string {
   switch (status) {
     case "TODO":
-      return "bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100";
+      return "linear-badge";
     case "DOING":
-      return "bg-sky-200 text-sky-900 dark:bg-sky-900 dark:text-sky-100";
+      return "linear-badge linear-badge-accent";
     case "DONE":
-      return "bg-emerald-200 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100";
+      return "linear-badge";
   }
 }
 
 export function priorityBadgeClasses(priority: TaskPriority): string {
   switch (priority) {
     case "HIGH":
-      return "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-200";
+      return "linear-badge linear-badge-danger";
     case "LOW":
-      return "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300";
+      return "linear-badge";
     default:
-      return "bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-100";
+      return "linear-badge linear-badge-accent";
   }
 }
 

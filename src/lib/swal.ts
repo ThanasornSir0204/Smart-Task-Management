@@ -1,25 +1,13 @@
 import Swal from "sweetalert2";
 
-function isDarkMode(): boolean {
-  if (typeof document === "undefined") return false;
-  return document.documentElement.classList.contains("dark");
-}
-
 function swalBase() {
-  const dark = isDarkMode();
   return {
-    background: dark ? "#0f172a" : "#ffffff",
-    color: dark ? "#f1f5f9" : "#0f172a",
-    confirmButtonColor: "#0284c7",
-    cancelButtonColor: dark ? "#475569" : "#94a3b8",
+    background: "#1A1A1A",
+    color: "#FFFFFF",
+    confirmButtonColor: "#5E6AD2",
+    cancelButtonColor: "#2A2A2A",
   };
 }
-
-const inputClass =
-  "swal2-input !mx-0 !mb-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-white";
-
-const selectClass =
-  "swal2-select !mx-0 !mb-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-white";
 
 export async function swalConfirm(options: {
   title: string;
@@ -45,7 +33,7 @@ export async function swalConfirmDelete(taskTitle: string): Promise<boolean> {
   return swalConfirm({
     icon: "warning",
     title: "ยืนยันการลบ",
-    html: `ต้องการลบงาน <strong>${escapeHtml(taskTitle)}</strong> ใช่หรือไม่?<br/><span class="text-sm opacity-80">การดำเนินการนี้ไม่สามารถย้อนกลับได้</span>`,
+    html: `ต้องการลบงาน <strong>${escapeHtml(taskTitle)}</strong> ใช่หรือไม่?<br/><span style="opacity:0.7;font-size:13px">การดำเนินการนี้ไม่สามารถย้อนกลับได้</span>`,
     confirmText: "ลบ",
   });
 }

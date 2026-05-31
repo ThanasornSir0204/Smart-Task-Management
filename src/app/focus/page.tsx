@@ -82,15 +82,15 @@ export default function FocusPage() {
 
   return (
     <AppShell user={user}>
-      <div className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-lg dark:border-slate-800 dark:bg-slate-900">
-        <h1 className="mb-6 text-2xl font-bold">{t.focus.title}</h1>
-        <p className="mb-6 font-mono text-6xl tabular-nums text-[var(--accent)]">
+      <div className="mx-auto max-w-md linear-card text-center">
+        <h1 className="linear-heading-lg mb-8">{t.focus.title}</h1>
+        <p className="mb-8 font-mono text-6xl tabular-nums text-[var(--linear-accent)]">
           {mm}:{ss}
         </p>
         <select
           value={taskId}
           onChange={(e) => setTaskId(e.target.value)}
-          className="mb-6 w-full rounded-lg border border-slate-300 px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+          className="linear-select mb-6"
         >
           <option value="">{t.focus.selectTask}</option>
           {doingTasks.map((task) => (
@@ -103,7 +103,7 @@ export default function FocusPage() {
           <button
             type="button"
             onClick={() => setRunning(!running)}
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-white"
+            className="linear-btn linear-btn-primary"
           >
             <FontAwesomeIcon icon={running ? faPause : faPlay} />
             {running ? t.focus.pause : t.focus.start}
@@ -114,7 +114,7 @@ export default function FocusPage() {
               setRunning(false);
               setSecondsLeft(POMODORO_SEC);
             }}
-            className="rounded-lg border px-4 py-2 dark:border-slate-600"
+            className="linear-btn linear-btn-secondary linear-btn-icon"
           >
             <FontAwesomeIcon icon={faRotateRight} />
           </button>
@@ -123,7 +123,7 @@ export default function FocusPage() {
           type="button"
           onClick={saveFocus}
           disabled={!taskId}
-          className="mt-6 w-full rounded-lg border border-emerald-500 py-2 font-semibold text-emerald-700 disabled:opacity-50 dark:text-emerald-400"
+          className="linear-btn linear-btn-secondary mt-6 w-full"
         >
           {t.focus.complete}
         </button>

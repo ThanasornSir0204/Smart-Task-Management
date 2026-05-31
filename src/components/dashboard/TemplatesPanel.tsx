@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "@/context/LocaleContext";
-import { createTemplate, deleteTemplate } from "@/lib/templates";
+import { deleteTemplate } from "@/lib/templates";
 import type { TaskTemplate } from "@/types/task";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -16,23 +16,23 @@ export function TemplatesPanel({
   const { t } = useLocale();
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
-      <h3 className="mb-3 text-sm font-semibold">{t.dashboard.templates}</h3>
+    <div className="linear-card-sm">
+      <h3 className="linear-label mb-3">{t.dashboard.templates}</h3>
       {templates.length === 0 ? (
-        <p className="text-sm text-slate-500">บันทึกเทมเพลตจากฟอร์มเพิ่มงาน</p>
+        <p className="linear-text-secondary text-[13px]">บันทึกเทมเพลตจากฟอร์มเพิ่มงาน</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-1">
           {templates.map((tpl) => (
             <li
               key={tpl.id}
-              className="flex items-center justify-between gap-2 rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-800/50"
+              className="flex items-center justify-between gap-2 rounded-[4px] px-2 py-2 transition-colors hover:bg-[var(--linear-surface-hover)]"
             >
-              <span className="truncate text-sm font-medium">{tpl.name}</span>
+              <span className="truncate text-[13px] font-medium">{tpl.name}</span>
               <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => onApply(tpl)}
-                  className="rounded bg-[var(--accent)] px-2 py-1 text-xs text-white"
+                  className="linear-btn linear-btn-primary linear-btn-icon"
                   title="ใช้เทมเพลต"
                 >
                   <FontAwesomeIcon icon={faBolt} />
@@ -40,7 +40,7 @@ export function TemplatesPanel({
                 <button
                   type="button"
                   onClick={() => deleteTemplate(tpl.id)}
-                  className="rounded border border-red-300 px-2 py-1 text-xs text-red-600"
+                  className="linear-btn linear-btn-danger linear-btn-icon"
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>

@@ -50,32 +50,32 @@ export default function TrashPage() {
 
   return (
     <AppShell user={user}>
-      <h1 className="mb-6 text-2xl font-bold">{t.trash.title}</h1>
+      <h1 className="linear-heading-lg mb-6">{t.trash.title}</h1>
       {loading ? (
-        <p>{t.common.loading}</p>
+        <p className="linear-text-secondary">{t.common.loading}</p>
       ) : tasks.length === 0 ? (
-        <p className="text-slate-500">{t.trash.empty}</p>
+        <div className="linear-empty">
+          <p>{t.trash.empty}</p>
+        </div>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-2">
           {tasks.map((task) => (
             <li
               key={task.id}
-              className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900"
+              className="linear-card-sm flex items-center justify-between gap-4"
             >
               <div>
                 <p className="font-medium">{task.title}</p>
-                <p className="text-xs text-slate-500">
+                <p className="linear-label">
                   ลบเมื่อ{" "}
-                  {task.deletedAt
-                    ? formatDisplayDate(task.deletedAt)
-                    : "-"}
+                  {task.deletedAt ? formatDisplayDate(task.deletedAt) : "-"}
                 </p>
               </div>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => restore(task.id)}
-                  className="inline-flex items-center gap-1 rounded-lg border px-3 py-1 text-sm"
+                  className="linear-btn linear-btn-secondary"
                 >
                   <FontAwesomeIcon icon={faUndo} />
                   {t.common.restore}
@@ -83,7 +83,7 @@ export default function TrashPage() {
                 <button
                   type="button"
                   onClick={() => permanentDelete(task.id, task.title)}
-                  className="inline-flex items-center gap-1 rounded-lg border border-red-300 px-3 py-1 text-sm text-red-700"
+                  className="linear-btn linear-btn-danger"
                 >
                   <FontAwesomeIcon icon={faTrash} />
                   {t.trash.permanentDelete}
